@@ -1,6 +1,8 @@
 const express = require("express");
 const Redis = require("ioredis");
 const pool = require("./database");
+const cors = require("cors");
+const bodyParser = require("body-parser");
 
 const app = express();
 
@@ -29,6 +31,9 @@ async function main() {
   app.listen(app.get('port'), () => {
     console.log('Server on port '.concat(app.get('port')));
   });
+  app.use(cors({ origin: true, credentials: true }))
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: true }));
 }
 
 main();
