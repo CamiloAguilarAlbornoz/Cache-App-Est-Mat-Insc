@@ -15,6 +15,7 @@ app.get("/estudiantesPorMaterias", async (req, res, next) => {
     });
     const results = await pool.query('SELECT M.nombre_materia "MATERIA", COUNT(E.id_estudiante) "CANTIDAD" FROM ESTUDIANTES E, MATERIAS M, INSCRIPCION_MATERIAS I WHERE E.id_estudiante = I.id_estudiante AND M.id_materia = I.id_materia GROUP BY M.nombre_materia');
     client.set("results", JSON.stringify(results), "EX", 10);
+    pool.query(`INSERT INTO REGISTROS_PETICIONES (estado, descripcion) VALUES ('GET: 200, Se obtuvo la cantidad de estudiantes inscritos por materia','Obtenido desde el cache');`);
     res.json(results);
   } catch (error) {
     pool.query(`INSERT INTO REGISTROS_PETICIONES (estado, descripcion) VALUES ('GET: 200, Se obtuvo la cantidad de estudiantes inscritos por materia','Obtenido desde el cache');`);
